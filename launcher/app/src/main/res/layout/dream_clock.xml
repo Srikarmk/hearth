@@ -13,6 +13,22 @@
         android:scaleType="centerCrop"
         android:importantForAccessibility="no" />
 
+    <!-- fireplace: the fireplace clip replaces the glow, darkened at the top so the clock reads over it. -->
+    <com.gathin.tvhome.FireVideo
+        android:id="@+id/dreamFire"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:importantForAccessibility="no" />
+
+    <View
+        android:id="@+id/dreamFireScrim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fire_scrim"
+        android:visibility="gone"
+        android:importantForAccessibility="no" />
+
     <LinearLayout
         android:id="@+id/dreamContent"
         android:layout_width="wrap_content"

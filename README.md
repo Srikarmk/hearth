@@ -7,6 +7,8 @@ and a glow in the colour of whatever you're about to watch.
 |---|---|
 | ![Stock Fire TV home with a sponsored banner](docs/before.jpg) | ![Hearth with the Ember theme](docs/after-ember.jpg) |
 
+![The Fireplace: a real wood fire with the clock above it](docs/fireplace.jpg)
+
 Fire OS won't let another app become Home, so Hearth doesn't fight it: a small accessibility service watches for
 Amazon's home screen and opens Hearth in its place. Amazon's launcher stays installed and enabled, and pressing
 Home twice in a row still gets you to it.
@@ -18,6 +20,8 @@ Home twice in a row still gets you to it.
 - **Home.** Builds the launcher from source and installs it, with `FireHomeService` sending the Home button to it.
   The service only sees window changes from Amazon's launcher and Appstore. It reads no screen content and filters
   no keys, so held Volume keeps repeating.
+- **Fireplace.** A real wood fire, looped without a seam, with a thin clock drifting above it. Open the
+  Fireplace tile for it with the crackle, or set `"fireplace": true` in a theme to make it the idle screen.
 - **Ad-blocking DNS**, optional: Private DNS through AdGuard for the whole TV.
 - **Themes** you can switch without a rebuild.
 
@@ -68,5 +72,6 @@ should work for the launcher half; the debloat list is per model.
 ## Credits
 
 Hearth started from [cleanyourtv](https://github.com/Gathin23/cleanyourtv) and borrows its Home redirect from
-[bansiman's Home Return](https://github.com/bansiman/cleanyourtv/tree/my-tv). Details in [CREDITS.md](CREDITS.md).
+[bansiman's Home Return](https://github.com/bansiman/cleanyourtv/tree/my-tv). The fireplace footage is by free video
+library on Wikimedia Commons (CC BY 3.0). Details in [CREDITS.md](CREDITS.md).
 MIT licensed.

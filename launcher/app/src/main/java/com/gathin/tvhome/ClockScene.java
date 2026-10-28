@@ -33,6 +33,9 @@ import java.util.Set;
 final class ClockScene {
 
     private static final long MOVE_MS = 60_000L;
+    /** How long the fireplace holds the screen on: chosen from the tile, or started by Home going idle. */
+    private static final long FIRE_ON_TILE_MS = 3 * 60 * 60_000L;
+    private static final long FIRE_ON_IDLE_MS = 30 * 60_000L;
     /** The glow's colour change: 16 steps over 8 s. Animated per frame it redrew the full-screen gradient ~480 times. */
     private static final int GLOW_STEPS = 16;
     private static final long GLOW_STEP_MS = 500L;
@@ -44,6 +47,12 @@ final class ClockScene {
     private final View content;
     private final ImageView ambient;
     private final GradientDrawable glow;
+    private final FireVideo fire;
+    private final View fireScrim;
+    private File fireClip;
+    private boolean fireSound;
+    /** fireplace: the fire is up and the clock keeps to the dark above it. */
+    private boolean fireplace;
     private int colorIndex;
     private int glowColor;
     /** clock_wallpaper or clock_glow false: something else (a picture, or plain black) replaced the coloured glow. */
@@ -76,6 +85,8 @@ final class ClockScene {
     ClockScene(View root) {
         content = root.findViewById(R.id.dreamContent);
         ambient = root.findViewById(R.id.dreamAmbient);
+        fire = root.findViewById(R.id.dreamFire);
+        fireScrim = root.findViewById(R.id.dreamFireScrim);
         glow = new GradientDrawable();
         glow.setGradientType(GradientDrawable.RADIAL_GRADIENT);
         ambient.setBackground(glow);
@@ -93,12 +104,20 @@ final class ClockScene {
         });
         handler.removeCallbacks(tick);
         handler.postDelayed(tick, MOVE_MS);
+        if (fireplace) {
+            fire.play(fireClip, fireSound);
+            // Over the TV's own screensaver, but only for a while: after that the TV may dim and sleep as usual.
+            fire.setKeepScreenOn(true);
+            handler.postDelayed(() -> fire.setKeepScreenOn(false), fireSound ? FIRE_ON_TILE_MS : FIRE_ON_IDLE_MS);
+        }
         if (wallpaperFile != null && !wallpaperShown) loadWallpaper();
     }
 
     void stop() {
         handler.removeCallbacksAndMessages(null);   // the tick and any glow steps still queued
         content.animate().cancel();
+        fire.stop();
+        fire.setKeepScreenOn(false);
         wallpaperGeneration++;   // a decode still running must not attach its picture to a stopped scene
     }
 
@@ -116,6 +135,7 @@ final class ClockScene {
         } catch (RuntimeException e) {
             return;
         }
+        if (cfg.fireplace && useFireplace(ctx, false)) return;
         if (!cfg.clockWallpaper) {
             // clock_glow false: plain black behind the clock (OLED); the clock itself still moves every minute.
             if (!cfg.clockGlow) {
@@ -146,6 +166,24 @@ final class ClockScene {
         }
         wallpaperShade = (cfg.clockWallpaperDim * 255 / 100) << 24;
         wallpaperRes = ctx.getResources();
+    }
+
+    /**
+     * The fireplace clip instead of the glow or a picture, with its crackle when sound is true (the Fireplace
+     * tile). False, and the scene left as it was, when no clip has been installed.
+     */
+    boolean useFireplace(Context ctx, boolean sound) {
+        File clip = FireVideo.clip(ctx);
+        if (clip == null) return false;
+        fireClip = clip;
+        fireSound = sound;
+        fireplace = true;
+        wallpaperShown = true;   // stops the glow's colour cycle and any wallpaper decode
+        wallpaperFile = null;
+        ambient.setBackground(null);
+        fire.setVisibility(View.VISIBLE);
+        fireScrim.setVisibility(View.VISIBLE);
+        return true;
     }
 
     private void loadWallpaper() {
@@ -234,6 +272,7 @@ final class ClockScene {
         View parent = (View) content.getParent();
         int maxX = Math.max(0, parent.getWidth() - content.getWidth());
         int maxY = Math.max(0, parent.getHeight() - content.getHeight());
+        if (fireplace) maxY = Math.max(0, (int) (parent.getHeight() * 0.34f) - content.getHeight());
         float x = maxX * (0.1f + 0.8f * random.nextFloat());
         float y = maxY * (0.1f + 0.8f * random.nextFloat());
         content.setX(x);

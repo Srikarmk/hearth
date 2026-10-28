@@ -77,6 +77,7 @@
     <string name="home_key_name">Home button</string>
     <string name="home_key_description">Makes the remote\'s Home button open this launcher.</string>
     <string name="fire_home_name">Fire TV Home</string>
+    <string name="fireplace_name">Fireplace</string>
     <string name="fire_home_description">Opens this launcher whenever Amazon\'s home screen appears. Press Home twice to stay on Amazon\'s home.</string>
     <string name="card_prompt_title">New card from %1$s</string>
     <string name="card_prompt_body">%1$s can show a card on your home screen. Keeping it hidden leaves the app\'s normal tile as it is.</string>

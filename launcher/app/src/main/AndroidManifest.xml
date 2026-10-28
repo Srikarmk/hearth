@@ -100,6 +100,22 @@
         </activity>
 
         <activity
+            android:name=".FireplaceActivity"
+            android:label="@string/fireplace_name"
+            android:taskAffinity="com.gathin.tvhome.fireplace"
+            android:banner="@drawable/banner_fireplace"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".LauncherSettingsActivity"
             android:exported="false"
             android:excludeFromRecents="true"

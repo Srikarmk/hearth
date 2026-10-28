@@ -18,7 +18,7 @@ public class ClockActivity extends Activity {
     }
 
 
-    private ClockScene scene;
+    ClockScene scene;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +43,14 @@ public class ClockActivity extends Activity {
         finish();   // never left behind in the back stack
     }
 
+    /** A key went down in this window. The release of the OK press that opened the Fireplace tile arrives here too. */
+    private boolean keyDown;
+
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
         // The key that wakes the clock should not also act on Home, so it is consumed here.
-        if (event.getAction() == KeyEvent.ACTION_UP) finish();
+        if (event.getAction() == KeyEvent.ACTION_DOWN) keyDown = true;
+        else if (event.getAction() == KeyEvent.ACTION_UP && keyDown) finish();
         return true;
     }
 

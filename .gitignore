@@ -12,3 +12,6 @@ tools/venv/
 tools/adbkey/
 __pycache__/
 .DS_Store
+
+# Downloaded at install time (CC BY 3.0, credited in README)
+media/

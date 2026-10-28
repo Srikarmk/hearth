@@ -6,6 +6,7 @@
 #   DNS=1                   also set ad-blocking Private DNS (dns.adguard-dns.com)
 #   THEME=themes/<name>     push a theme once the launcher is in
 #   SKIP_DEBLOAT=1          launcher only
+#   SKIP_FIREPLACE=1        don't download and install the fireplace clip (19 MB)
 #
 # Undo everything with ./uninstall.sh.
 set -euo pipefail
@@ -20,6 +21,7 @@ if [ ! -x "$PY" ]; then
   tools/venv/bin/pip install -q -r tools/requirements.txt
 fi
 tv() { "$PY" -I tools/tv.py "$@"; }
+FIRE_URL=https://upload.wikimedia.org/wikipedia/commons/b/bb/Fantastic-fireplace-fire-chimney-hearth-_background_-_texture_-_motion_graphics_-_free_video_library.webm
 prop() { tv "getprop $1" | tr -d '\r\n'; }
 
 echo "== Connecting to $TV_HOST (accept \"Allow USB debugging?\" on the TV if it asks)"
@@ -76,6 +78,14 @@ echo "== Installing"
 "$PY" -I tools/b64push.py "$APK" /data/local/tmp/hearth.apk
 tv 'pm install -r /data/local/tmp/hearth.apk'
 tv 'rm -f /data/local/tmp/hearth.apk'
+
+if [ -z "${SKIP_FIREPLACE:-}" ]; then
+  echo "== Fireplace clip (Wikimedia Commons, CC BY 3.0)"
+  mkdir -p media
+  [ -s media/fireplace.webm ] || curl -fL -A 'hearth-install' -o media/fireplace.webm "$FIRE_URL"
+  "$PY" -I tools/b64push.py media/fireplace.webm /data/local/tmp/fireplace.webm
+  tv 'content write --uri content://com.gathin.tvhome.theme/fireplace.webm < /data/local/tmp/fireplace.webm; rm -f /data/local/tmp/fireplace.webm'
+fi
 
 echo "== Pointing Home at the launcher"
 SERVICE=com.gathin.tvhome/.FireHomeService
