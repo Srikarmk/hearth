@@ -1,0 +1,14 @@
+# Build output
+build/
+.gradle/
+local.properties
+*.apk
+
+# Per-TV state: never commit
+backup/
+shots/
+work/
+tools/venv/
+tools/adbkey/
+__pycache__/
+.DS_Store

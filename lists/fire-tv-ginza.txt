@@ -1,0 +1,26 @@
+# Amazon Fire TV AFTHY7ABBA (ginza), Fire OS 8.1.8.5 / Android 11, build RS8185.3885N
+# Started from cleanyourtv's examples/amazon-fire-tv-aftdec012e (same ginza board and build).
+# Applied in three batches, all 15 still disabled after a reboot. Disabled for user 0, never uninstalled.
+#
+# Kept on purpose: Alexa, Miracast (com.amazon.cast.sink), AirPlay, casting, OTA updates, HDMI inputs.
+
+# Ads, content recognition, shopping
+com.amazon.shoptv.client
+com.amazon.tv.acr
+com.amazon.tv.democontent.provider
+
+# Telemetry and metrics
+com.amazon.neo.minerva
+com.amazon.neo.minerva.logcat
+com.amazon.wirelessmetrics.service
+com.amazon.perfcollection
+com.amazon.perfc
+com.amazon.dp.logger
+
+# Tutorials, promos and Amazon content preloads
+com.amazon.storm.lightning.tutorial
+com.amazon.tmm.tutorial
+com.amazon.gamehub
+com.amazon.bueller.music
+com.amazon.bueller.photos
+com.amazon.naatyam
