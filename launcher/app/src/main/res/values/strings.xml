@@ -78,6 +78,32 @@
     <string name="home_key_description">Makes the remote\'s Home button open this launcher.</string>
     <string name="fire_home_name">Fire TV Home</string>
     <string name="fireplace_name">Fireplace</string>
+    <string name="chess_name">Chess</string>
+    <string name="wallpapers">Wallpapers</string>
+    <string name="wallpapers_hint">Add your own from a computer: tools/wallpapers.sh &lt;folder&gt;</string>
+    <string name="wallpapers_none">No wallpaper</string>
+    <string name="wallpapers_theme">Theme default</string>
+    <string name="malvek_name" translatable="false">DR. MALVEK</string>
+    <string name="malvek_title" translatable="false">SOVEREIGN OF VYRNHOLD</string>
+    <string name="chess_hints">Arrows move  ·  OK pick up and place  ·  Menu options  ·  Back leave</string>
+    <string name="chess_thinking">Dr. Malvek is thinking…</string>
+    <string name="chess_your_move">Your move</string>
+    <string name="chess_you_won">Checkmate. You win. OK for a rematch.</string>
+    <string name="chess_he_won">Checkmate. Malvek wins. OK to try again.</string>
+    <string name="chess_draw">Draw. OK for a new game.</string>
+    <string name="chess_level">%1$s  ·  you play %2$s</string>
+    <string name="chess_white">White</string>
+    <string name="chess_black">Black</string>
+    <string name="chess_even">Material is even</string>
+    <string name="chess_you_up">You are up %1$d</string>
+    <string name="chess_he_up">Malvek is up %1$d</string>
+    <string name="chess_casual">Casual</string>
+    <string name="chess_sharp">Sharp</string>
+    <string name="chess_ruthless">Ruthless</string>
+    <string name="chess_new_game">New game</string>
+    <string name="chess_difficulty">Difficulty: %1$s</string>
+    <string name="chess_play_black">Switch sides: play Black</string>
+    <string name="chess_play_white">Switch sides: play White</string>
     <string name="fire_home_description">Opens this launcher whenever Amazon\'s home screen appears. Press Home twice to stay on Amazon\'s home.</string>
     <string name="card_prompt_title">New card from %1$s</string>
     <string name="card_prompt_body">%1$s can show a card on your home screen. Keeping it hidden leaves the app\'s normal tile as it is.</string>

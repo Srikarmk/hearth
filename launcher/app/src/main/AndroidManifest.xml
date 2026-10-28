@@ -116,6 +116,27 @@
         </activity>
 
         <activity
+            android:name=".WallpaperPickerActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+
+        <activity
+            android:name=".ChessActivity"
+            android:label="@string/chess_name"
+            android:banner="@drawable/banner_chess"
+            android:taskAffinity="com.gathin.tvhome.chess"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".LauncherSettingsActivity"
             android:exported="false"
             android:excludeFromRecents="true"

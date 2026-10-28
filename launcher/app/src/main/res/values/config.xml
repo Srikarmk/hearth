@@ -326,6 +326,9 @@
     <bool name="wifi_status_warnings">false</bool>
     <!-- The app library as a round button in the top bar, beside Settings (app_library must be on too). -->
     <bool name="library_button">false</bool>
+    <!-- A Wallpapers button in the top bar: a grid of the theme's pictures to pick from, the same choice as
+         Launcher settings > Wallpaper. Add pictures with tools/wallpapers.sh. "wallpaper_button" in a theme. -->
+    <bool name="wallpaper_button">true</bool>
     <!-- The App library pill after the last Home row. false hides it while library_button is on, so the top-bar
          button stays the way in, and Down from the last row stays put as with app_library off. Can also be set
          with "show_library_pill": false in a theme's config.json. -->

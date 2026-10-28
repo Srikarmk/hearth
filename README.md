@@ -22,6 +22,11 @@ Home twice in a row still gets you to it.
   no keys, so held Volume keeps repeating.
 - **Fireplace.** A real wood fire, looped without a seam, with a thin clock drifting above it. Open the
   Fireplace tile for it with the crackle, or set `"fireplace": true` in a theme to make it the idle screen.
+- **Chess against Dr. Malvek.** The Chess tile: you against a theatrical armored tyrant who refers to himself in
+  the third person and reacts to your captures, checks and blunders. Played with the remote; Menu has New game,
+  Difficulty (Casual, Sharp, Ruthless) and Switch sides; the game is saved after every move.
+- **Wallpapers button** in the top bar: a grid of thumbnails to pick Home's picture from. Add your own with
+  `tools/wallpapers.sh <folder>` (see below).
 - **Ad-blocking DNS**, optional: Private DNS through AdGuard for the whole TV.
 - **Themes** you can switch without a rebuild.
 
@@ -47,6 +52,21 @@ TV_HOST=192.168.1.50 ./uninstall.sh
 ```
 
 `KEEP_DEBLOAT=1` removes only the launcher.
+
+## Your own wallpapers
+
+```bash
+TV_HOST=192.168.1.50 tools/wallpapers.sh ~/Pictures/tv
+```
+
+Sends every JPG, PNG or WebP in the folder (up to 10 MB each, 100 in all) to the TV, then the Wallpapers button
+in the top bar shows them. File names become the titles. The pictures stay on your computer and the TV, never in
+this repo, so use whatever you like on your own screen. A theme push replaces them: run it again after
+`tools/theme.sh`. `tools/wallpapers.sh --clear` removes them.
+
+| Chess | Wallpapers |
+|---|---|
+| ![Chess against Dr. Malvek](docs/chess.jpg) | ![The wallpaper picker](docs/wallpapers.jpg) |
 
 ## Themes
 
