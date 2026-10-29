@@ -2,7 +2,7 @@
 
 A clean home screen for Amazon Fire TV. No sponsored rows, no autoplaying ads, no tracking: your apps, a clock,
 and a glow in the colour of whatever you're about to watch. Plus a fireplace, a chess villain, and your phone as a
-remote control for all of it.
+companion for all of it.
 
 | Before | After |
 |---|---|
