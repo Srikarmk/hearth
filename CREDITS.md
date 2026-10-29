@@ -7,7 +7,7 @@ Hearth is built on [cleanyourtv](https://github.com/Gathin23/cleanyourtv) by Gat
 |---|---|
 | `launcher/` | cleanyourtv's launcher, with `FireHomeService` added and the dock set for Fire TV |
 | `tools/` | cleanyourtv's ADB client and scripts (`tv.py`, `disable.sh`, `restore.sh`, `recovery.py`, `b64push.py`, `theme.sh`, `adb-closed.py`) |
-| `lists/fire-tv-ginza.txt` | cleanyourtv's `examples/amazon-fire-tv-aftdec012e` list, re-tested on an AFTHY7ABBA |
+| `lists/fire-tv-afthy7abba.txt` | cleanyourtv's `examples/amazon-fire-tv-aftdec012e` list, re-tested on an AFTHY7ABBA |
 | `FireHomeService` | Ported from bansiman's Home Return ([bansiman/cleanyourtv](https://github.com/bansiman/cleanyourtv/tree/my-tv), MIT) |
 | Outfit typeface | The Outfit Project Authors, SIL Open Font License 1.1 |
 | Chess pieces | Colin M.L. Burnett's set from [Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces) (`Chess_*t45.svg`, rendered at 160 px), [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/). The images in `launcher/app/src/main/res/drawable-nodpi/chess_*.png` stay under that licence. |
