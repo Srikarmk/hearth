@@ -14,7 +14,7 @@
         android:importantForAccessibility="no" />
 
     <!-- fireplace: the fireplace clip replaces the glow, darkened at the top so the clock reads over it. -->
-    <com.gathin.tvhome.FireVideo
+    <io.github.srikarmk.hearth.FireVideo
         android:id="@+id/dreamFire"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,6 +28,21 @@
         android:background="@drawable/fire_scrim"
         android:visibility="gone"
         android:importantForAccessibility="no" />
+
+    <!-- Ambience: the scene's name and credit, or download progress. -->
+    <TextView
+        android:id="@+id/dreamCaption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="48dp"
+        android:visibility="gone"
+        android:shadowColor="#CC000000"
+        android:shadowRadius="8"
+        android:textColor="#E6FFFFFF"
+        android:textSize="18sp"
+        android:lineSpacingMultiplier="1.3"
+        android:fontFamily="@string/font_regular" />
 
     <LinearLayout
         android:id="@+id/dreamContent"

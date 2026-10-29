@@ -7,6 +7,9 @@
     <uses-feature android:name="android.hardware.wifi" android:required="false" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
 
+    <!-- Hearth: fetching an ambience scene the first time it is picked (upload.wikimedia.org), the phone
+         companion page on the home network, and Live Dr. Malvek when it is switched on. -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- Needed since Android 10 to read the Wi-Fi network name for the network pill. Never requested at
@@ -102,7 +105,7 @@
         <activity
             android:name=".FireplaceActivity"
             android:label="@string/fireplace_name"
-            android:taskAffinity="com.gathin.tvhome.fireplace"
+            android:taskAffinity="io.github.srikarmk.hearth.fireplace"
             android:banner="@drawable/banner_fireplace"
             android:exported="true"
             android:excludeFromRecents="true"
@@ -125,7 +128,7 @@
             android:name=".ChessActivity"
             android:label="@string/chess_name"
             android:banner="@drawable/banner_chess"
-            android:taskAffinity="com.gathin.tvhome.chess"
+            android:taskAffinity="io.github.srikarmk.hearth.chess"
             android:exported="true"
             android:excludeFromRecents="true"
             android:screenOrientation="landscape"
@@ -226,7 +229,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- Screensaver: pick it in Settings, or `settings put secure screensaver_components
-             com.gathin.tvhome/.ClockDream` over adb. -->
+             io.github.srikarmk.hearth/.ClockDream` over adb. -->
         <service
             android:name=".FireHomeService"
             android:label="@string/fire_home_name"
@@ -263,7 +266,7 @@
          app_keys (config.xml or a theme) bring back other remote buttons; see InputKeyService. -->
         <!-- Bound again by the system after a force stop, which restarts Home on firmware that kills
              third-party apps (TCL tc8000_ay30a2). It reads no notification.
-             cmd notification allow_listener com.gathin.tvhome/.GuardRevival -->
+             cmd notification allow_listener io.github.srikarmk.hearth/.GuardRevival -->
         <service
             android:name=".GuardRevival"
             android:directBootAware="true"
@@ -279,7 +282,7 @@
             android:exported="true"
             android:permission="android.permission.WRITE_SECURE_SETTINGS">
             <intent-filter>
-                <action android:name="com.gathin.tvhome.GUARD" />
+                <action android:name="io.github.srikarmk.hearth.GUARD" />
             </intent-filter>
         </receiver>
 

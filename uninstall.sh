@@ -14,9 +14,9 @@ PY=tools/venv/bin/python
 tv() { "$PY" -I tools/tv.py "$@"; }
 
 echo "== Turning off the Home redirect"
-SERVICE=com.gathin.tvhome/.FireHomeService
+SERVICE=io.github.srikarmk.hearth/.FireHomeService
 CURRENT=$(tv 'settings get secure enabled_accessibility_services' | tr -d '\r\n')
-REST=$(printf '%s' "$CURRENT" | tr ':' '\n' | grep -vxF -e "$SERVICE" -e com.gathin.tvhome/com.gathin.tvhome.FireHomeService -e null | paste -sd: - || true)
+REST=$(printf '%s' "$CURRENT" | tr ':' '\n' | grep -vxF -e "$SERVICE" -e io.github.srikarmk.hearth/io.github.srikarmk.hearth.FireHomeService -e null | paste -sd: - || true)
 if [ -n "$REST" ]; then
   tv "settings put secure enabled_accessibility_services $REST"
 else
@@ -24,8 +24,16 @@ else
   tv 'settings put secure accessibility_enabled 0'
 fi
 
+saved=$(ls -1d backup/*/screensaver.txt 2>/dev/null | tail -n 1 || true)
+if [ -n "$saved" ]; then
+  echo "== Screensaver back to $(tr -d '\r\n' < "$saved")"
+  previous=$(tr -d '\r\n' < "$saved")
+  if [ "$previous" = null ] || [ -z "$previous" ]; then tv 'settings delete secure screensaver_components'
+  else tv "settings put secure screensaver_components $previous"; fi
+fi
+
 echo "== Removing the launcher"
-tv 'pm uninstall com.gathin.tvhome' || true
+tv 'pm uninstall io.github.srikarmk.hearth' || true
 
 if [ -z "${KEEP_DEBLOAT:-}" ]; then
   LIST=${LIST:-lists/fire-tv-$(tv 'getprop ro.product.device' | tr -d '\r\n').txt}

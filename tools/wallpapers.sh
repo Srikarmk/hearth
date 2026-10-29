@@ -16,7 +16,7 @@ cd "$(dirname "$0")"
 PY=venv/bin/python
 [ -x "$PY" ] || { echo "run ./install.sh first (it sets up tools/venv)" >&2; exit 1; }
 tv() { "$PY" -I tv.py "$@"; }
-URI=content://com.gathin.tvhome.theme
+URI=content://io.github.srikarmk.hearth.theme
 
 if [ "$SRC" = --clear ]; then
   tv "content delete --uri $URI/wallpapers" >/dev/null
@@ -32,8 +32,11 @@ while IFS= read -r -d '' f; do
   case "$ext" in jpg|jpeg|png|webp) ;; *) continue ;; esac
   size=$(stat -f %z "$f" 2>/dev/null || stat -c %s "$f")
   if [ "$size" -gt 10485760 ]; then echo "skipping $base: over 10 MB"; continue; fi
-  name="$(printf '%s' "${base%.*}" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9_.-' '_' | sed 's/^_*//; s/_*$//')"
-  [ -n "$name" ] || name="wallpaper_$sent"
+  # Wallpaper sites name files like "wp9200837-1920x1080-manga-wallpapers": drop the site id, the resolution,
+  # bare numbers and the word wallpaper, so the picker shows "Manga". Your own files keep their names.
+  name="$(printf '%s' "${base%.*}" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '\n' \
+    | grep -vE '^(u?wp[0-9]+|[0-9]+x[0-9]+|[0-9]+|wallpapers?|hd|4k|uhd)$' | paste -sd_ - || true)"
+  [ -n "$name" ] || name="wallpaper_$((sent + 1))"
   echo "== $base -> $name.$ext"
   "$PY" -I b64push.py "$f" /data/local/tmp/hearth-wallpaper >/dev/null
   tv "content write --uri $URI/wallpapers/$name.$ext < /data/local/tmp/hearth-wallpaper; rm -f /data/local/tmp/hearth-wallpaper"

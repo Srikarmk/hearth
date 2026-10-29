@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Home</string>
+    <string name="app_name">Hearth</string>
     <string name="inputs">Inputs</string>
     <string name="wifi">Wi-Fi</string>
     <string name="settings">Settings</string>
@@ -77,10 +77,18 @@
     <string name="home_key_name">Home button</string>
     <string name="home_key_description">Makes the remote\'s Home button open this launcher.</string>
     <string name="fire_home_name">Fire TV Home</string>
-    <string name="fireplace_name">Fireplace</string>
+    <string name="fireplace_name">Ambience</string>
+    <string name="scene_fire">Fireplace</string>
+    <string name="scene_rain">Rain on the window</string>
+    <string name="scene_aquarium">Aquarium</string>
+    <string name="scene_snow">Snowfall</string>
+    <string name="scene_ocean">Ocean at dusk</string>
+    <string name="scene_downloading">Fetching %1$s… %2$d%%</string>
+    <string name="scene_failed">Could not fetch %1$s. Check the TV\'s internet, then press Left or Right to try again.</string>
     <string name="chess_name">Chess</string>
     <string name="wallpapers">Wallpapers</string>
     <string name="wallpapers_hint">Add your own from a computer: tools/wallpapers.sh &lt;folder&gt;</string>
+    <string name="wallpapers_hint_phone">Add your own from your phone: %1$s  ·  code %2$s</string>
     <string name="wallpapers_none">No wallpaper</string>
     <string name="wallpapers_theme">Theme default</string>
     <string name="malvek_name" translatable="false">DR. MALVEK</string>
@@ -104,6 +112,8 @@
     <string name="chess_difficulty">Difficulty: %1$s</string>
     <string name="chess_play_black">Switch sides: play Black</string>
     <string name="chess_play_white">Switch sides: play White</string>
+    <string name="chess_live_on">Live Malvek: on (Claude writes his lines)</string>
+    <string name="chess_live_off">Live Malvek: off (his written lines)</string>
     <string name="fire_home_description">Opens this launcher whenever Amazon\'s home screen appears. Press Home twice to stay on Amazon\'s home.</string>
     <string name="card_prompt_title">New card from %1$s</string>
     <string name="card_prompt_body">%1$s can show a card on your home screen. Keeping it hidden leaves the app\'s normal tile as it is.</string>

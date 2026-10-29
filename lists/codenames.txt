@@ -1,0 +1,13 @@
+# Codename fallback for a model without its own list: codename -> list. A codename shared by
+# different TVs (shine) is left out on purpose, so install.sh asks for LIST= instead of guessing.
+blanche fire-tv-afteamr311.txt
+brandenburg fire-tv-afttiff43.txt
+coyote fire-tv-aftcibfbd1.txt
+duckie fire-tv-aftdct31.txt
+ginza fire-tv-afthy7abba.txt
+greta fire-tv-afteu014.txt
+hazel fire-tv-aftha004.txt
+kara fire-tv-aftka.txt
+karat fire-tv-aftkm.txt
+mantis fire-tv-aftmm.txt
+sheldon fire-tv-aftss.txt

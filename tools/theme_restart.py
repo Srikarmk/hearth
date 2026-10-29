@@ -9,7 +9,7 @@ import shlex
 import sys
 import time
 
-PACKAGE = "com.gathin.tvhome"
+PACKAGE = "io.github.srikarmk.hearth"
 SERVICES = "enabled_accessibility_services"
 FLAG = "accessibility_enabled"
 ACTION = "android.accessibilityservice.AccessibilityService"

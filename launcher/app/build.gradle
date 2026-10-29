@@ -2,17 +2,34 @@ plugins {
     id 'com.android.application'
 }
 
+// Release signing: a properties file outside the repo (storeFile, storePassword, keyAlias, keyPassword), at
+// $HEARTH_SIGNING or ~/.config/hearth/signing.properties. Without one, release builds use the debug key.
+def signing = new Properties()
+def signingFile = file(System.getenv('HEARTH_SIGNING') ?: "${System.getProperty('user.home')}/.config/hearth/signing.properties")
+if (signingFile.isFile()) signingFile.withInputStream { signing.load(it) }
+
 android {
-    namespace 'com.gathin.tvhome'
+    namespace 'io.github.srikarmk.hearth'
     compileSdk 34
 
     defaultConfig {
         // Opt-in identity for firmware with a package-name HOME allowlist; see docs/devices/xiaomi-mitv-aetp0-dofus.md.
-        applicationId providers.gradleProperty('launcherApplicationId').getOrElse('com.gathin.tvhome')
+        applicationId providers.gradleProperty('launcherApplicationId').getOrElse('io.github.srikarmk.hearth')
         minSdk 26
         targetSdk 34
-        versionCode 10
-        versionName '3.1'
+        versionCode providers.gradleProperty('hearthVersionCode').getOrElse('1').toInteger()
+        versionName providers.gradleProperty('hearthVersionName').getOrElse('0.1.0')
+    }
+
+    signingConfigs {
+        release {
+            if (signing['storeFile']) {
+                storeFile file(signing['storeFile'])
+                storePassword signing['storePassword']
+                keyAlias signing['keyAlias']
+                keyPassword signing['keyPassword']
+            }
+        }
     }
 
     buildTypes {
@@ -21,8 +38,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // Sideloaded over ADB, never published: sign with the debug key so it installs over a debug build.
-            signingConfig signingConfigs.debug
+            signingConfig signing['storeFile'] ? signingConfigs.release : signingConfigs.debug
         }
     }
 

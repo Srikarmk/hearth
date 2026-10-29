@@ -1,0 +1,48 @@
+name: Release
+
+# Push a tag like v0.2.0 to build a signed APK and attach it to a GitHub release.
+# Signing uses the repository secrets HEARTH_KEYSTORE_B64 (base64 of the .jks) and HEARTH_KEYSTORE_PASSWORD;
+# without them the APK is signed with a throwaway debug key and will not install over an earlier release.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+      - name: Signing key
+        env:
+          KEYSTORE_B64: ${{ secrets.HEARTH_KEYSTORE_B64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.HEARTH_KEYSTORE_PASSWORD }}
+        run: |
+          if [ -n "$KEYSTORE_B64" ]; then
+            echo "$KEYSTORE_B64" | base64 -d > "$RUNNER_TEMP/hearth.jks"
+            printf 'storeFile=%s\nstorePassword=%s\nkeyAlias=hearth\nkeyPassword=%s\n' \
+              "$RUNNER_TEMP/hearth.jks" "$KEYSTORE_PASSWORD" "$KEYSTORE_PASSWORD" > "$RUNNER_TEMP/signing.properties"
+            echo "HEARTH_SIGNING=$RUNNER_TEMP/signing.properties" >> "$GITHUB_ENV"
+          else
+            echo "::warning::No signing secrets: this APK is debug-signed."
+          fi
+      - name: Build
+        working-directory: launcher
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          IFS=. read -r major minor patch <<< "$version"
+          code=$(( major * 10000 + minor * 100 + ${patch:-0} ))
+          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          ./gradlew --no-daemon -PhearthVersionName="$version" -PhearthVersionCode="$code" testReleaseUnitTest assembleRelease
+          cp app/build/outputs/apk/release/app-release.apk "$RUNNER_TEMP/hearth-$version.apk"
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "$RUNNER_TEMP/hearth-${GITHUB_REF_NAME#v}.apk" --title "Hearth $GITHUB_REF_NAME" --generate-notes

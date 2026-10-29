@@ -35,7 +35,7 @@ SETTINGS = ("window_animation_scale", "transition_animation_scale", "animator_du
 # This project's own launcher. When it already owned Home before debloating while the stock launcher
 # was on, restoring Home to it would leave the stock launcher's Home unused, so restore goes back to the
 # stock one instead. When the stock launcher was already off then, this launcher keeps Home (#1714).
-CUSTOM_LAUNCHER = "com.gathin.tvhome"
+CUSTOM_LAUNCHER = "io.github.srikarmk.hearth"
 # The stock launchers launcher/build-and-install.sh knows (its KNOWN_STOCK_LAUNCHERS). save() records
 # the state of each one installed, listed or not, so restore turns one back on only when it was on
 # before cleanup (#1714). tests/test_restore_stock_launcher.py keeps the two lists in step.
