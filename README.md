@@ -135,10 +135,11 @@ shellcheck on every push; pushing a tag like `v0.2.0` builds a signed APK and pu
 
 ## Tested on
 
-Amazon Fire TV AFTHY7ABBA (`ginza`), Fire OS 8.1.8.5 / Android 11: Home takeover with the real remote and after a
-reboot, the fireplace, Chess, the Wallpapers button and `tools/wallpapers.sh`. Rain, aquarium, snow and ocean
-scenes, the phone companion, Live Dr. Malvek and the screensaver option are built and unit tested, not yet run on
-a TV.
+Amazon Fire TV AFTHY7ABBA (`ginza`), Fire OS 8.1.8.5 / Android 11, with the v0.1.0 release APK: install over an
+earlier build, Home takeover with the real remote and after a reboot, all five ambience scenes (each fetched on
+first use), the fireplace as Home's idle screen, Chess, the Wallpapers button, `tools/wallpapers.sh`, and the phone
+companion (apps, scenes and Chess started over another app, wallpaper choice, photo upload, wrong code refused).
+Live Dr. Malvek and the screensaver option are built and unit tested, not yet run on a TV.
 
 ## Credits
 
