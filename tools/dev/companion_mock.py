@@ -19,6 +19,7 @@ STATE = {
                {"id": "aquarium", "label": "Aquarium", "ready": False}, {"id": "snow", "label": "Snowfall", "ready": False},
                {"id": "ocean", "label": "Ocean at dusk", "ready": False}],
     "wallpapers": [{"name": "manga.jpg", "title": "Manga"}, {"name": "doctor_doom.jpg", "title": "Doctor doom"}],
+    "theme": True,
     "current": "manga.jpg",
 }
 # A 1x1 dark JPEG stands in for thumbnails.

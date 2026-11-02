@@ -1,9 +1,11 @@
 package io.github.srikarmk.hearth;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +13,8 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -449,36 +453,81 @@ public class ChessActivity extends Activity {
                 getString(R.string.chess_difficulty, getString(levelName(level))),
                 getString(player == Chess.WHITE ? R.string.chess_play_black : R.string.chess_play_white)));
         if (liveKey != null) list.add(getString(live ? R.string.chess_live_on : R.string.chess_live_off));
-        String[] items = list.toArray(new String[0]);
-        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                .setItems(items, (dlg, which) -> {
-                    if (which == 0) {
-                        newGame();
-                    } else if (which == 1) {
-                        chooseLevel();
-                    } else if (which == 3) {
-                        live = !live;
-                        getSharedPreferences(PREFS, MODE_PRIVATE).edit().putBoolean("live", live).apply();
-                    } else {
-                        player = -player;
-                        newGame();
-                    }
-                })
-                .show();
+        sheet(list.toArray(new String[0]), -1, which -> {
+            if (which == 0) {
+                newGame();
+            } else if (which == 1) {
+                chooseLevel();
+            } else if (which == 3) {
+                live = !live;
+                getSharedPreferences(PREFS, MODE_PRIVATE).edit().putBoolean("live", live).apply();
+            } else {
+                player = -player;
+                newGame();
+            }
+        });
     }
 
     private void chooseLevel() {
         ChessAi.Level[] levels = ChessAi.Level.values();
         String[] names = new String[levels.length];
         for (int i = 0; i < levels.length; i++) names[i] = getString(levelName(levels[i]));
-        new AlertDialog.Builder(this, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                .setSingleChoiceItems(names, level.ordinal(), (dlg, which) -> {
-                    level = levels[which];
-                    save();
-                    updatePanel();
-                    dlg.dismiss();
-                })
-                .show();
+        sheet(names, level.ordinal(), which -> {
+            level = levels[which];
+            save();
+            updatePanel();
+        });
+    }
+
+    /** A list in the board's own look (dark glass, Outfit, a lavender focus), in place of the stock grey dialog. */
+    private void sheet(String[] items, int checked, java.util.function.IntConsumer pick) {
+        float d = getResources().getDisplayMetrics().density;
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        LinearLayout list = new LinearLayout(this);
+        list.setOrientation(LinearLayout.VERTICAL);
+        int pad = Math.round(14 * d);
+        list.setPadding(pad, pad, pad, pad);
+        GradientDrawable glass = new GradientDrawable();
+        glass.setColor(0xF2181222);
+        glass.setStroke(Math.round(1.5f * d), 0x33FFFFFF);
+        glass.setCornerRadius(22 * d);
+        list.setBackground(glass);
+        TextView first = null;
+        for (int i = 0; i < items.length; i++) {
+            final int which = i;
+            TextView row = text(R.string.font_regular, 22, 0xD9FFFFFF, 0.02f, (i == checked ? "\u2713  " : "") + items[i]);
+            int h = Math.round(26 * d), v = Math.round(16 * d);
+            row.setPadding(h, v, h, v);
+            row.setFocusable(true);
+            row.setClickable(true);
+            GradientDrawable on = new GradientDrawable();
+            on.setColor(0x33C7B8E8);
+            on.setStroke(Math.round(1.5f * d), 0x99C7B8E8);
+            on.setCornerRadius(14 * d);
+            StateListDrawable states = new StateListDrawable();
+            states.addState(new int[]{android.R.attr.state_focused}, on);
+            states.addState(new int[]{}, new ColorDrawable(0));
+            row.setBackground(states);
+            row.setOnFocusChangeListener((view, has) -> ((TextView) view).setTextColor(has ? 0xFFFFFFFF : 0xD9FFFFFF));
+            row.setOnClickListener(view -> {
+                dialog.dismiss();
+                pick.accept(which);
+            });
+            list.addView(row, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            if (first == null || i == checked) first = row;
+        }
+        dialog.setContentView(list);
+        Window w = dialog.getWindow();
+        if (w != null) {
+            w.setBackgroundDrawable(new ColorDrawable(0));
+            w.setLayout(Math.round(460 * d), WindowManager.LayoutParams.WRAP_CONTENT);
+            w.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+            w.setDimAmount(0.55f);
+        }
+        TextView focus = first;
+        dialog.setOnShowListener(x -> { if (focus != null) focus.requestFocus(); });
+        dialog.show();
     }
 
     private void say(Malvek.Moment moment) {

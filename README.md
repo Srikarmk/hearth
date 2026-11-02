@@ -118,6 +118,12 @@ Hearth sends nothing about you anywhere. What it does use the network for:
 The debloat turns off Amazon's own telemetry and content recognition, and the optional DNS blocks ad and tracker
 domains for every app on the TV.
 
+A Fire TV keeps no time while it's unplugged. After a power cut it can come back weeks behind, and if AdGuard's
+certificate is newer than that date, strict Private DNS fails every lookup and the clock can't sync either: Wi-Fi
+says connected and nothing loads. Hearth watches for this and switches to automatic DNS until the clock is set,
+then turns AdGuard back on; if AdGuard still fails, the TV stays on automatic DNS and tries again later. It only
+ever touches the Private DNS mode, and leaves it alone once you change it yourself.
+
 ## Building and releases
 
 `launcher/` is a Gradle project (JDK 17, Android SDK platform 34, build-tools 34.0.0):

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-/** Names a phone sends with an upload, cleaned to what the launcher's wallpaper collection accepts. */
+/** Names a phone sends with an upload, cleaned to what the launcher's wallpaper collection accepts, and the wallpaper choice as the phone sees it. */
 public class CompanionServerTest {
 
     @Test
@@ -27,5 +27,15 @@ public class CompanionServerTest {
     @Test
     public void anEmptyNameGetsOne() {
         assertTrue(CompanionServer.clean("???.jpg").matches("phone_\\d+\\.jpg"));
+    }
+
+    @Test
+    public void theThemesPictureIsOneChoiceToThePhone() {
+        // Unset (the theme decides) and the TV picker's Theme default are the same choice.
+        assertEquals(CompanionServer.THEME, CompanionServer.currentToken(null, true));
+        assertEquals(CompanionServer.THEME, CompanionServer.currentToken(Config.WALLPAPER_NAME, true));
+        assertEquals("", CompanionServer.currentToken(null, false));
+        assertEquals(CompanionServer.NONE, CompanionServer.currentToken("none", true));
+        assertEquals("manga.jpg", CompanionServer.currentToken("manga.jpg", true));
     }
 }

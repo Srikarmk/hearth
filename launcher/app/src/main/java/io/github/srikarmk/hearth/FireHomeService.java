@@ -31,6 +31,13 @@ public class FireHomeService extends AccessibilityService {
     private long lastRedirect;
     private long buttonLaunch;
 
+    /** Fire OS binds this service at boot, before anything else of Hearth runs: the place for the DNS guard. */
+    @Override
+    protected void onServiceConnected() {
+        super.onServiceConnected();
+        DnsGuard.start(this);
+    }
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (event.getEventType() != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return;

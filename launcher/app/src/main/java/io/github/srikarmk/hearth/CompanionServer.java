@@ -159,7 +159,8 @@ final class CompanionServer {
         List<ResolveInfo> found = pm.queryIntentActivities(
                 new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LEANBACK_LAUNCHER), 0);
         JSONArray apps = new JSONArray();
-        java.util.Set<String> seen = new java.util.HashSet<>();
+        // The apps Home lists: hidden_apps (config.xml or the theme) stay off the phone too.
+        java.util.Set<String> seen = new java.util.HashSet<>(Config.load(ctx).hiddenApps);
         for (ResolveInfo ri : found) {
             String pkg = ri.activityInfo.packageName;
             if (pkg.equals(ctx.getPackageName()) || !seen.add(pkg)) continue;
@@ -176,8 +177,9 @@ final class CompanionServer {
             walls.put(new JSONObject().put("name", f.getName()).put("title", WallpaperPickerActivity.prettyName(f.getName())));
         }
         o.put("wallpapers", walls);
-        o.put("current", ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE)
-                .getString(Config.WALLPAPER_CHOICE_KEY, ""));
+        o.put("theme", themeWallpaper() != null);
+        o.put("current", currentToken(ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE)
+                .getString(Config.WALLPAPER_CHOICE_KEY, null), themeWallpaper() != null));
         return o;
     }
 
@@ -202,10 +204,34 @@ final class CompanionServer {
         return true;
     }
 
+    /** The phone's names for the two choices that are not files: the theme's own picture, and none. */
+    static final String THEME = "theme", NONE = "none";
+
+    /** The stored choice as the phone sees it: THEME, NONE or a file name ("" when the theme has no picture). */
+    static String currentToken(String stored, boolean themeHasPicture) {
+        if (stored == null || stored.isEmpty() || stored.equals(Config.WALLPAPER_NAME)) return themeHasPicture ? THEME : "";
+        return stored;
+    }
+
+    /** The theme's single wallpaper (what the TV's picker calls Theme default), or null. */
+    private File themeWallpaper() {
+        File dir = Config.dir(ctx);
+        File f = dir == null ? null : new File(dir, Config.WALLPAPER_NAME);
+        return f != null && f.isFile() ? f : null;
+    }
+
     private boolean choose(String name) {
         File dir = Config.dir(ctx);
-        if (name == null || dir == null || !new File(new File(dir, "wallpapers"), name).isFile()) return false;
-        setChoice(name);
+        if (name == null || dir == null) return false;
+        if (name.equals(THEME)) {
+            if (themeWallpaper() == null) return false;
+            setChoice(Config.WALLPAPER_NAME);   // what the TV's picker stores for Theme default
+        } else if (name.equals(NONE)) {
+            setChoice(NONE);
+        } else {
+            if (!new File(new File(dir, "wallpapers"), name).isFile()) return false;
+            setChoice(name);
+        }
         return true;
     }
 
@@ -249,8 +275,9 @@ final class CompanionServer {
 
     private void thumb(OutputStream out, String name) throws Exception {
         File dir = Config.dir(ctx);
-        File f = name == null || dir == null ? null : new File(new File(dir, "wallpapers"), name);
-        if (f == null || !f.isFile() || !f.getParentFile().equals(new File(dir, "wallpapers"))) {
+        File f = name == null || dir == null ? null
+                : name.equals(THEME) ? themeWallpaper() : new File(new File(dir, "wallpapers"), name);
+        if (f == null || !f.isFile() || !(f.equals(themeWallpaper()) || f.getParentFile().equals(new File(dir, "wallpapers")))) {
             send(out, 404, "text/plain", new byte[0]);
             return;
         }

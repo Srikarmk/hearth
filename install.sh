@@ -116,6 +116,9 @@ echo "== Installing $APK"
 "$PY" -I tools/b64push.py "$APK" /data/local/tmp/hearth.apk
 tv 'pm install -r /data/local/tmp/hearth.apk'
 tv 'rm -f /data/local/tmp/hearth.apk'
+# Lets Hearth's DNS guard drop strict Private DNS to automatic when a power cut leaves the TV's clock behind the
+# DNS server's certificate (nothing loads, and the clock can't sync), and put it back once the time is set.
+tv "pm grant $PKG android.permission.WRITE_SECURE_SETTINGS" || echo "   (could not grant WRITE_SECURE_SETTINGS: the DNS guard stays off)"
 
 echo "== Pointing Home at Hearth"
 CURRENT=$(tv 'settings get secure enabled_accessibility_services' | tr -d '\r\n')
